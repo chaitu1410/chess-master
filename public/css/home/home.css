@@ -1,0 +1,9 @@
+/* all posts */
+.homeSection {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.posts {
+  width: 100%;
+}

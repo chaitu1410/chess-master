@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="/css/home/createPost.css" />
+
+<section>
+  <form
+    id="myNav"
+    class="overlay"
+    action="/post"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <div class="overlay-top-section">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
+        >&times;</a
+      >
+      <button type="submit" class="btn">Post</button>
+    </div>
+    <div class="overlay-content">
+      <div id="preview-container" hidden>
+        <img id="preview-image" />
+      </div>
+      <div class="form-group">
+        <textarea
+          class="form-control"
+          rows="15"
+          name="caption"
+          id="caption"
+          placeholder="Write Something . . . "
+        ></textarea>
+        <input
+          onchange="showPreview(event)"
+          type="file"
+          name="image"
+          id="image"
+          accept="image/*"
+          hidden
+        />
+      </div>
+      <div class="createpost-attach postSection">
+        <div class="item-attach">
+          <p>+ Add Attachment</p>
+        </div>
+        <div class="item-attach1">
+          <div class="itemat">
+            <img onclick="insertImage()" src="/images/attach1.svg " alt=" " />
+          </div>
+          <!-- <div class="itemat">
+            <img src="/images/attach2.svg " alt=" " />
+          </div> -->
+          <div class="itemat">
+            <img
+              onclick="detectLocation()"
+              src="/images/attach3.svg "
+              alt=" "
+            />
+          </div>
+          <!-- <div class="itemat itemat1">
+            <img src="/images/attach4.svg " alt=" " />
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="postcreate-c" onclick="openNav() ">
+    <div class="postcreate">
+      <p>+ Create Your Post</p>
+    </div>
+  </div>
+</section>
+<script src="/js/home/createPost.js "></script>

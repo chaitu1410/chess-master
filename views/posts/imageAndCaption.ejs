@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="css/posts/imageAndCaption.css" />
+
+<div id="post-<%=id%>" class="post">
+  <%- include('./postTop', {username: username, profileImage: profileImage, by:
+  by, id: id, name: name, selfID: selfID}) %>
+
+  <div class="image-and-caption">
+    <div class="post-image">
+      <img src="<%=image%>" alt=" " />
+    </div>
+
+    <%- include('./postBottom', {id: id, userID: userID, selfID: selfID}) %>
+
+    <div class="post-caption">
+      <p id="imageCaption_<%=id%>">
+        <span class="post-profile-name"><%= username %></span>
+        <% var caption = caption; %> <% var splitCaption = caption.split(" ");%>
+        <%caption = ``;%> <% for (let index = 0; index < splitCaption.length;
+        index++) { if (index === 15) {%> <%caption += splitCaption[index] + `
+        <span
+          id="caption_dots_` + id + `"
+          onclick="toggleImageCaption(this.id)"
+          class="toggler"
+          >...read more</span
+        >
+        <span id="caption_more_` + id + `" class="more"
+          >`; %> <% } else { %><% caption += splitCaption[index] + " ";%><% } }
+          if (splitCaption.length > 15) { %><% caption += `
+        </span>
+        <br />
+        <span
+          id="caption_less_` + id + `"
+          onclick="toggleImageCaption(this.id)"
+          class="more less"
+          >show less</span
+        >
+        `; } %>
+
+        <script>
+          document.getElementById("imageCaption_<%=id%>").insertAdjacentHTML(
+            "beforeend",
+            `<%= caption %>`
+              .replace(
+                /(https?:\/\/[^\s]+)/g,
+                '<a target="_blank" class="caption-link" href="$1">$1</a>'
+              )
+              .replaceAll(`&gt;`, ">")
+              .replaceAll("&lt;", "<")
+              .replaceAll("&#34;", `"`)
+          );
+        </script>
+      </p>
+    </div>
+  </div>
+</div>

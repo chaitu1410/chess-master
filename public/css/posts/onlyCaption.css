@@ -1,0 +1,9 @@
+.caption-only-post-caption {
+  padding: 1.7rem;
+  background-color: rgb(233, 233, 233);
+}
+.caption-only-post-caption p {
+  font-size: 14px;
+  margin-bottom: 0px;
+  word-wrap: break-word;
+}

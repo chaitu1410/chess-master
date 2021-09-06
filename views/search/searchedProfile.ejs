@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/profile/profile.css" />
+    <title>ChessMaster Community | <%=data.username%>'s Profile</title>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyBly1FJfCUUtB0zxUlWC1yCOdxu2kdM6lc",
+        authDomain: "chessmaster-ef60e.firebaseapp.com",
+        projectId: "chessmaster-ef60e",
+        storageBucket: "chessmaster-ef60e.appspot.com",
+        messagingSenderId: "958207309306",
+        appId: "1:958207309306:web:b57d4f1f98b328af902043",
+        measurementId: "G-5ZPH55RN6B",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+  </head>
+
+  <body>
+    <div id="my-profile" class="profile">
+      <div class="profile-top">
+        <div id="edit-button" class="edit-button" onclick="shareProfile()">
+          <p id="copied-teller" class="copied-teller"></p>
+          <span class="material-icons">share</span>
+        </div>
+        <div class="profile-data">
+          <% if (data.profileImage === "") { %>
+          <div id="name-profile">
+            <p id="profile-text">
+              <%= data.name.split(' ')[0][0] %><% if(data.name.split(' ').length
+              > 1) {%><%= data.name.split(' ')[1][0] %><%}%>
+            </p>
+          </div>
+          <% } else { %>
+          <img src="<%=data.profileImage%>" alt="profileImage" />
+          <% } %>
+          <div class="profile-info">
+            <p class="name"><%=data.name%></p>
+            <p class="username">@<%=data.username%></p>
+            <p class="bio"><%=data.bio%></p>
+          </div>
+          <div class="profile-user-engagement">
+            <div class="engagement-data">
+              <p class="count"><%= data.posts.length %></p>
+              <p>Posts</p>
+            </div>
+            <div id="follower" class="engagement-data">
+              <p id="followers-<%=data.id%>" class="count"></p>
+              <p>Followers</p>
+            </div>
+            <div class="engagement-data">
+              <p id="following-<%=data.id%>" class="count"></p>
+              <p>Following</p>
+            </div>
+          </div>
+          <% if (data.id !== userID) { %>
+          <button
+            onclick="followUnfollow('<%=data.id%>', '<%=userID%>')"
+            id="connection-button"
+            class="btn-lg btn-primary connection-button"
+          >
+            Follow
+          </button>
+          <% } %>
+        </div>
+      </div>
+      <div style="background-color: whitesmoke" class="posts">
+        <% for (let index = 0; index < data.posts.length; index++) { %> <% if
+        (data.posts[index].data.type === "imageAndCaption") { %> <%-
+        include('../posts/imageAndCaption', {id: data.posts[index].id, caption:
+        data.posts[index].data.caption, image: data.posts[index].data.image,
+        username: data.username, profileImage: data.profileImage, userID:
+        data.id, by: data.posts[index].data.by, name: data.name, selfID:
+        userID}) %> <% } else if (data.posts[index].data.type === "captionOnly")
+        { %> <%- include('../posts/onlyCaption', {id: data.posts[index].id,
+        caption: data.posts[index].data.caption, username: data.username,
+        profileImage: data.profileImage, userID: data.id, by:
+        data.posts[index].data.by, name: data.name, selfID: userID}) %> <% }
+        else { %> <%- include('../posts/onlyImage', {id: data.posts[index].id,
+        image: data.posts[index].data.image, username: data.username,
+        profileImage: data.profileImage, userID: data.id, by:
+        data.posts[index].data.by, name: data.name, selfID: userID}) %> <% } %>
+        <% } %>
+      </div>
+    </div>
+  </body>
+  <script>
+    const shareProfile = () => {
+      var dummy = document.createElement("input"),
+        text = window.location.href.split("#")[0];
+
+      document.body.appendChild(dummy);
+      dummy.value = text;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+
+      document.getElementById("copied-teller").innerText =
+        "Profile URL Copied!";
+      setTimeout(
+        () => (document.getElementById("copied-teller").innerText = ""),
+        2121
+      );
+    };
+  </script>
+  <script>
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc("<%=data.id%>")
+      .onSnapshot((data) => {
+        document.getElementById(
+          "followers-<%=data.id%>"
+        ).innerText = data.data().followers.length;
+
+        <% if (data.id !== userID) { %>
+          if (data.data().followers.indexOf("<%=userID%>") > -1) {
+            document
+              .getElementById("connection-button")
+              .classList.remove("btn-primary");
+            document
+              .getElementById("connection-button")
+              .classList.add("btn-danger");
+            document.getElementById("connection-button").innerText = "Unfollow";
+          } else {
+            document
+              .getElementById("connection-button")
+              .classList.remove("btn-danger");
+            document
+              .getElementById("connection-button")
+              .classList.add("btn-primary");
+            document.getElementById("connection-button").innerText = "Follow";
+          }
+        <% } %>
+
+        document.getElementById(
+          "following-<%=data.id%>"
+        ).innerText = data.data().following.length;
+      });
+  </script>
+  <script>
+    const followUnfollow = async (id, userID) => {
+      const userSnapshot = await firebase
+        .firestore()
+        .collection("Users")
+        .doc(id)
+        .get();
+      const followers = userSnapshot.data().followers;
+
+      const selfSnapshot = await firebase
+        .firestore()
+        .collection("Users")
+        .doc(userID)
+        .get();
+      const following = selfSnapshot.data().following;
+
+      if (followers.indexOf(userID) === -1) {
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(id)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayUnion(userID),
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("Users")
+              .doc(userID)
+              .update({
+                following: firebase.firestore.FieldValue.arrayUnion(id),
+              });
+          });
+      } else {
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(id)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayRemove(userID),
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("Users")
+              .doc(userID)
+              .update({
+                following: firebase.firestore.FieldValue.arrayRemove(id),
+              });
+          });
+      }
+    };
+  </script>
+
+  <script src="/js/posts/postBottom.js"></script>
+</html>

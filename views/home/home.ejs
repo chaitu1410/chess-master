@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/home/home.css" />
+    <title>ChessMaster Community | Home</title>
+  </head>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+   https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyBly1FJfCUUtB0zxUlWC1yCOdxu2kdM6lc",
+      authDomain: "chessmaster-ef60e.firebaseapp.com",
+      projectId: "chessmaster-ef60e",
+      storageBucket: "chessmaster-ef60e.appspot.com",
+      messagingSenderId: "958207309306",
+      appId: "1:958207309306:web:b57d4f1f98b328af902043",
+      measurementId: "G-5ZPH55RN6B",
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+
+  <body>
+    <link itemprop="thumbnailUrl" href="/images/appshortcut.png" />
+    <span
+      itemprop="thumbnail"
+      itemscope
+      itemtype="http://schema.org/ImageObject"
+    >
+      <link itemprop="url" href="/images/appshortcut.png" />
+    </span>
+
+    <%- include('../commons/navbar') %> <%- include('./createPost') %>
+
+    <section class="homeSection">
+      <div class="posts">
+        <% for (let index = 0; index < data.length; index++) { %> <% if
+        (data[index].posts.type === "imageAndCaption") { %> <%-
+        include('../posts/imageAndCaption', {id: data[index].postID, caption:
+        data[index].posts.caption, image: data[index].posts.image, username:
+        data[index].username, profileImage: data[index].profileImage, userID:
+        data[index].userID, by: data[index].posts.by, name: data[index].name,
+        selfID: data[index].selfID}) %> <% } else if (data[index].posts.type ===
+        "captionOnly") { %> <%- include('../posts/onlyCaption', {id:
+        data[index].postID, caption: data[index].posts.caption, username:
+        data[index].username, profileImage: data[index].profileImage, userID:
+        data[index].userID, by: data[index].posts.by, name: data[index].name,
+        selfID: data[index].selfID}) %> <% } else { %> <%-
+        include('../posts/onlyImage', {id: data[index].postID, image:
+        data[index].posts.image, username: data[index].username, profileImage:
+        data[index].profileImage, userID: data[index].userID, by:
+        data[index].posts.by, name: data[index].name, selfID:
+        data[index].selfID}) %> <% } %> <% } %>
+      </div>
+    </section>
+
+    <%- include('../commons/footer') %>
+  </body>
+  <script>
+    const followUnfollow = async (id, userID) => {
+      const userSnapshot = await firebase
+        .firestore()
+        .collection("Users")
+        .doc(id)
+        .get();
+      const followers = userSnapshot.data().followers;
+
+      const selfSnapshot = await firebase
+        .firestore()
+        .collection("Users")
+        .doc(userID)
+        .get();
+      const following = selfSnapshot.data().following;
+
+      if (followers.indexOf(userID) === -1) {
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(id)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayUnion(userID),
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("Users")
+              .doc(userID)
+              .update({
+                following: firebase.firestore.FieldValue.arrayUnion(id),
+              });
+          });
+      } else {
+        firebase
+          .firestore()
+          .collection("Users")
+          .doc(id)
+          .update({
+            followers: firebase.firestore.FieldValue.arrayRemove(userID),
+          })
+          .then(() => {
+            firebase
+              .firestore()
+              .collection("Users")
+              .doc(userID)
+              .update({
+                following: firebase.firestore.FieldValue.arrayRemove(id),
+              });
+          });
+      }
+    };
+  </script>
+
+  <script src="/js/posts/longCaption.js"></script>
+  <script src="/js/posts/formatText.js"></script>
+  <script src="/js/home/home.js"></script>
+  <script src="/js/posts/postBottom.js"></script>
+</html>

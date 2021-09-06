@@ -1,0 +1,78 @@
+body {
+  height: 95vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+}
+
+.signup {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  padding-top: 21px;
+  padding-bottom: 11px;
+  padding-right: 7px;
+  justify-content: center;
+  padding-left: 7px;
+  margin: 0;
+  box-shadow: none;
+}
+
+#verifier {
+  margin-top: 7px;
+  align-self: center;
+}
+
+.multi-container {
+  width: 100% !important;
+  max-width: 571px !important;
+  align-self: center;
+  display: flex;
+  align-items: flex-end;
+}
+
+.multi-fields {
+  flex: 1;
+}
+
+.multi-button {
+  font-size: 15px;
+  margin-left: 4px;
+}
+
+.signup > img {
+  width: 71%;
+  max-width: 444px;
+  align-self: center;
+  object-fit: contain;
+  border-radius: 24px;
+}
+
+/* edit signup styles */
+.signup > form {
+  padding: 7px;
+  padding-top: 0;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+}
+.inputs input,
+.inputs textarea {
+  font-size: 15px;
+  width: 100% !important;
+  max-width: 571px !important;
+  transition: border 271ms;
+  align-self: center;
+  margin-bottom: 11px;
+}
+
+.signup-button {
+  display: grid;
+  place-items: center;
+  margin-top: 11px;
+  margin-bottom: 11px;
+}

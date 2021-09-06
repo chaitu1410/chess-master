@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/qna/qna.css" />
+    <title>ChessMaster Community | QnA</title>
+  </head>
+
+  <body>
+    <%- include('../commons/navbar') %>
+
+    <section class="qna-section">
+      <div class="qna-posts">
+        <%- include('../posts/onlyImage') %> <%- include('../posts/onlyCaption',
+        {id: 1}) %> <% for (let index = 0; index < 5; index++) { %> <%-
+        include('../posts/imageAndCaption', {id: index}) %> <% } %>
+      </div>
+    </section>
+
+    <%- include('../commons/footer') %>
+  </body>
+  <script src="/js/posts/longCaption.js"></script>
+</html>

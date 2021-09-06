@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/news/news.css" />
+    <title>ChessMaster Community | News</title>
+  </head>
+
+  <body>
+    <%- include('../commons/navbar') %>
+
+    <section class="news-section">
+      <div class="news-posts">
+        <%- include('../posts/onlyImage') %> <%- include('../posts/onlyCaption',
+        {id: 1}) %> <% for (let index = 0; index < 5; index++) { %> <%-
+        include('../posts/imageAndCaption', {id: index}) %> <% } %>
+      </div>
+    </section>
+
+    <%- include('../commons/footer') %>
+  </body>
+  <script src="/js/posts/longCaption.js"></script>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/matches/matches.css" />
+    <title>ChessMaster Community | Matches</title>
+  </head>
+
+  <body>
+    <%- include('../commons/navbar') %>
+
+    <section class="matches-section">
+      <div class="matches-posts">
+        <% for (let index = 0; index < 5; index++) { %> <%-
+        include('./matchPost', {id: index}) %> <% } %>
+      </div>
+    </section>
+
+    <%- include('../commons/footer') %>
+  </body>
+  <script src="/js/posts/longCaption.js"></script>
+</html>

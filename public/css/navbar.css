@@ -1,0 +1,140 @@
+.navbar {
+  z-index: 1;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+}
+
+.navlogo {
+  width: 50%;
+  padding-left: 1rem;
+}
+
+.navlogo img {
+  height: 2rem;
+}
+
+.navsearch {
+  width: 50%;
+  text-align: end;
+  padding-right: 1.7rem;
+}
+
+.navsearch img {
+  height: 1.2rem;
+}
+
+.navtab {
+  z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  background-color: white;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  padding-left: 21vw;
+  padding-right: 21vw;
+  box-shadow: 0px 4px 4px 0.0001px rgba(0, 0, 0, 0.1);
+}
+
+.navtabsub {
+  width: 20%;
+  padding: 0.7rem 0.7rem;
+  text-align: center;
+  margin-top: 0.5rem;
+  border-bottom: 2.1px solid rgb(245, 245, 245);
+  transition: border 333ms ease-in-out;
+}
+
+.navtabsub:hover {
+  border-bottom: 2.1px solid #e41d24;
+}
+
+.navtabsub:hover img {
+  transform: scale(1.04) translateY(-2px);
+}
+
+.navtab img {
+  height: 1.6rem;
+  transition: transform 333ms ease-in-out;
+}
+
+.active--tab {
+  border-bottom: 2.1px solid #e41d24;
+  transition: 251ms;
+}
+
+/* Medium devices (landscape tablets, 550px to 850) */
+@media only screen and (max-width: 800px) {
+  .navtab {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    background-color: white;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    padding: unset;
+    box-shadow: 0px 4px 4px 0.0001px rgba(0, 0, 0, 0.1);
+  }
+  .active--tab {
+    border-bottom: 2.1px solid #e41d24;
+    transition: 251ms;
+  }
+}
+
+/* Extra small devices (phones, 0px to 550px) */
+
+@media only screen and (max-width: 550px) {
+  /* navbar */
+  .navtab img {
+    height: 1.6rem;
+  }
+  .navbar {
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+  }
+  .navlogo {
+    width: 50%;
+    padding-left: 0;
+  }
+  .navlogo img {
+    height: 2rem;
+  }
+  .navsearch {
+    width: 50%;
+    text-align: end;
+    padding-right: 0;
+  }
+  .navsearch img {
+    height: 1.2rem;
+  }
+  .navtab {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: white;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+  }
+  .navtabsub {
+    width: 20%;
+    padding: 0.7rem 0.7rem;
+    text-align: center;
+    margin-top: 0.5rem;
+    border-bottom: 2px solid rgb(245, 245, 245);
+  }
+  .active--tab {
+    border-bottom: 2.1px solid #e41d24;
+    transition: 251ms;
+  }
+}

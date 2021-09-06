@@ -1,0 +1,290 @@
+<link rel="stylesheet" href="/css/posts/postBottom.css" />
+<link rel="stylesheet" href="/css/posts/comment.css" />
+
+<div class="postbottom">
+  <div class="postoptions">
+    <div class="post-option">
+      <div onclick="likePost('<%=id%>', '<%=selfID%>')" class="option-button">
+        <span id="like-icon-<%=id%>" class="material-icons"></span>
+        <p id="likes-<%=id%>"></p>
+      </div>
+      <div
+        onclick="toggleComment('<%=id%>')"
+        id="center-option"
+        class="option-button"
+      >
+        <img src="/images/comment.svg" alt="" />
+        <p id="comments-<%=id%>"></p>
+      </div>
+      <div onclick="sharePost('<%=id%>', '<%=userID%>')" class="option-button">
+        <span id="share-icon-<%=id%>" class="material-icons">share</span>
+        <p id="shares-<%=id%>"></p>
+      </div>
+    </div>
+  </div>
+  <section
+    id="comment-section-<%=id%>"
+    class="comment-section collapse"
+    style="transition: 251ms !important"
+  >
+    <div id="all-comments-<%=id%>" class="all-comments"></div>
+    <div class="comment-div">
+      <input
+        type="text"
+        class="comment"
+        id="comment-<%=id%>"
+        placeholder="Comment"
+        autofocus
+      />
+      <span
+        onclick="comment('<%=id%>', '<%=selfID%>')"
+        class="material-icons"
+        style="margin-top: 9px"
+      >
+        send
+      </span>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.getElementById(`share-icon-<%=id%>`).style.color = "gray";
+  firebase
+    .firestore()
+    .collection("Posts")
+    .doc("<%=id%>")
+    .onSnapshot((snapshot) => {
+      document.getElementById(
+        "likes-<%=id%>"
+      ).innerText = snapshot.data().likedBy.length;
+
+      if (snapshot.data().likedBy.includes("<%=selfID%>")) {
+        document.getElementById("like-icon-<%=id%>").innerText = "favorite";
+        document.getElementById("like-icon-<%=id%>").style.color = "red";
+      } else {
+        document.getElementById("like-icon-<%=id%>").innerText =
+          "favorite_border";
+        document.getElementById("like-icon-<%=id%>").style.color = "gray";
+      }
+
+      document.getElementById(
+        "shares-<%=id%>"
+      ).innerText = snapshot.data().shares;
+    });
+</script>
+
+<script>
+  firebase
+    .firestore()
+    .collection("Posts")
+    .doc("<%=id%>")
+    .collection("Comments")
+    .orderBy("at")
+    .onSnapshot((snapshot) => {
+      const loadPostData = async () => {
+        let commentsHTML = "";
+        const getSecondLetter = (name) => {
+          if (name.length > 1) {
+            return name[1][0];
+          } else {
+            return "";
+          }
+        };
+
+        for (const comment of snapshot.docs) {
+          const userSnapshot = await firebase
+            .firestore()
+            .collection("Users")
+            .doc(comment.data().by)
+            .get();
+
+          const user = {
+            profileImage: userSnapshot.data().profileImage,
+            username: userSnapshot.data().username,
+            name: userSnapshot.data().name,
+          };
+
+          commentsHTML += `
+                <div id="comment-${
+                  comment.id
+                }" class="comment_user" onclick="toggleReply('${comment.id}')">
+                  <div class="profile-image" style="align-self: flex-start">
+                    ${
+                      user.profileImage === ""
+                        ? `<div class="name-profile">
+                      <p class="profile-text">
+                        ${user.name.split(" ")[0][0]}${getSecondLetter(
+                            user.name.split(" ")
+                          )}
+                        </p>
+                        </div>`
+                        : `<img src="${user.profileImage}" alt=" " />`
+                    }
+                  </div>
+                  <div class="profile-name">
+                    <p class="profile-username">${user.username}</p>
+                    <p class="profile-message">${comment.data().comment}</p>
+                  </div>
+                </div>
+
+                <div id="reply-section-${comment.id}" class="collapse">
+                  <div id="all-replies-${comment.id}" class="all-replies"></div>
+                  <div class="reply-div">
+                    <input
+                      type="text"
+                      class="reply"
+                      id="reply-${comment.id}"
+                      placeholder="Reply"
+                      autofocus
+                    />
+                    <span
+                      onclick="reply('<%=id%>', '${comment.id}', '<%=selfID%>')"
+                      class="material-icons"
+                      style="margin-top: 9px"
+                    >
+                      reply  
+                    </span>
+                  </div>
+                </div>
+              `;
+        }
+        document.getElementById(
+          "all-comments-<%=id%>"
+        ).innerHTML = commentsHTML;
+
+        document.getElementById("comments-<%=id%>").innerText =
+          snapshot.docs.length;
+
+        for (const comment of snapshot.docs) {
+          document.getElementById(`all-replies-${comment.id}`).innerHTML = "";
+          firebase
+            .firestore()
+            .collection("Posts")
+            .doc("<%=id%>")
+            .collection("Comments")
+            .doc(comment.id)
+            .collection("Replies")
+            .orderBy("at")
+            .onSnapshot((snapshot) => {
+              const getReplyData = async () => {
+                let replyHTML = "";
+                for (const reply of snapshot.docs) {
+                  const userSnapshot = await firebase
+                    .firestore()
+                    .collection("Users")
+                    .doc(reply.data().by)
+                    .get();
+
+                  const user = {
+                    profileImage: userSnapshot.data().profileImage,
+                    username: userSnapshot.data().username,
+                    name: userSnapshot.data().name,
+                  };
+
+                  replyHTML += `
+                    <div id="reply-${reply.id}" class="comment_user">
+                      <div class="profile-image" style="align-self: flex-start">
+                        ${
+                          user.profileImage === ""
+                            ? `<div class="name-profile">
+                            <p class="profile-text">
+                            ${user.name.split(" ")[0][0]}${getSecondLetter(
+                                user.name.split(" ")
+                              )}
+                              </p>
+                            </div>`
+                            : `<img src="${user.profileImage}" alt=" " />`
+                        }
+                      </div>
+                      <div class="profile-name">
+                        <p class="profile-username">${user.username}</p>
+                        <p class="profile-message">${reply.data().reply}</p>
+                      </div>
+                    </div>
+                    `;
+                }
+                document.getElementById(
+                  `all-replies-${comment.id}`
+                ).innerHTML = replyHTML;
+              };
+              getReplyData();
+            });
+        }
+      };
+      loadPostData();
+    });
+</script>
+
+<!-- <script>
+  firebase
+    .firestore()
+    .collection("Posts")
+    .doc("<%=id%>")
+    .collection("Comments")
+    .orderBy("at")
+    .onSnapshot((snapshot) => {
+      const loadPostData = async () => {
+        const getSecondLetter = (name) => {
+          if (name.length > 1) {
+            return name[1][0];
+          } else {
+            return "";
+          }
+        };
+
+        for (const comment of snapshot.docs) {
+          let replyHTML = "";
+          firebase
+            .firestore()
+            .collection("Posts")
+            .doc("<%=id%>")
+            .collection("Comments")
+            .doc(comment.id)
+            .collection("Replies")
+            .orderBy("at")
+            .onSnapshot((snapshot) => {
+              const getReplyData = async () => {
+                for (const reply of snapshot.docs) {
+                  console.log(comment.id);
+                  const userSnapshot = await firebase
+                    .firestore()
+                    .collection("Users")
+                    .doc(reply.data().by)
+                    .get();
+
+                  const user = {
+                    profileImage: userSnapshot.data().profileImage,
+                    username: userSnapshot.data().username,
+                    name: userSnapshot.data().name,
+                  };
+
+                  replyHTML += `
+                    <div id="reply-${reply.id}" class="comment_user">
+                      <div class="profile-image" style="align-self: flex-start">
+                        ${
+                          user.profileImage === ""
+                            ? `<div class="name-profile">
+                            <p class="profile-text">
+                            ${user.name.split(" ")[0][0]}${getSecondLetter(
+                                user.name.split(" ")
+                              )}
+                              </p>
+                            </div>`
+                            : `<img src="${user.profileImage}" alt=" " />`
+                        }
+                      </div>
+                      <div class="profile-name">
+                        <p class="profile-username">${user.username}</p>
+                        <p class="profile-message">${reply.data().reply}</p>
+                      </div>
+                    </div>
+                    `;
+                }
+              };
+              getReplyData();
+            });
+        }
+      };
+      loadPostData();
+    });
+</script> -->

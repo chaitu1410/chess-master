@@ -1,0 +1,133 @@
+.profile-image {
+  height: 2.1rem;
+  width: 2.1rem;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+  margin-top: -3px;
+}
+
+.profile-image img {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px rgba(128, 128, 128, 0.733);
+}
+
+.post-top {
+  display: flex;
+  padding-left: 1rem;
+  justify-content: space-between;
+}
+.post-top-c {
+  display: flex;
+}
+.profile-image {
+  height: 2.2rem;
+  width: 2.2rem;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+}
+.profile-image img {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid #e41d24;
+}
+.follow-user button {
+  font-size: 14px;
+  padding: 3px;
+  margin-right: 1rem;
+}
+.profile-name p {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.join-button {
+  border-radius: 7px;
+  font-size: 13px !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.name-profile {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid #e41d24;
+  background-color: black;
+  display: grid;
+  place-items: center;
+}
+
+.profile-text {
+  font-weight: bolder;
+  color: #e41d24;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: black;
+}
+
+@media only screen and (max-width: 550px) {
+  .profile-image {
+    height: 2.1rem;
+    width: 2.1rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.7rem;
+    margin-top: -3px;
+  }
+  .profile-image img {
+    height: 2rem;
+    width: 2rem;
+    border-radius: 50%;
+    box-shadow: 1px 1px 2px rgba(128, 128, 128, 0.733);
+  }
+
+  .post-top {
+    display: flex;
+    padding-left: 1rem;
+    justify-content: space-between;
+  }
+  .post-top-c {
+    display: flex;
+  }
+  .profile-image {
+    height: 2.2rem;
+    width: 2.2rem;
+    text-align: center;
+    border-radius: 50%;
+    margin-right: 0.7rem;
+  }
+  .profile-image img {
+    height: 2.2rem;
+    width: 2.2rem;
+    border-radius: 50%;
+    border: 2px solid #e41d24;
+  }
+
+  .follow-user button {
+    font-size: 14px;
+    padding: 3px;
+    margin-right: 1rem;
+  }
+  .profile-name p {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .join-button {
+    border-radius: 7px;
+    font-size: 11px !important;
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+    box-shadow: none !important;
+    outline: none !important;
+  }
+}

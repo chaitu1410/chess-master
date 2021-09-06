@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="css/posts/imageAndCaption.css" />
+
+<div class="post">
+  <%- include('./matchPostTop') %>
+
+  <div class="image-and-caption">
+    <div class="post-image">
+      <img src="/images/post.jpg " alt=" " />
+    </div>
+
+    <%- include('./matchPostBottom') %>
+
+    <div class="post-caption">
+      <p>
+        <span class="post-profile-name">samruddhivaidya</span>
+        <% var caption = `Black threatens to capture on c5 and the white king is
+        too far away… Is White in trouble? Just the opposite, White is about to
+        win this game! Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        Vitae inventore maxime animi iste sint expedita. Molestias vel magnam
+        natus inventore recusandae! Lorem ipsum dolor sit amet consectetur
+        adipisicing elit. Enim, at pariatur. Lorem ipsum dolor, sit amet
+        consectetur adipisicing elit. Autem, architecto aliquid!`;%> <% var
+        splitCaption = caption.split(" ");%> <%caption = ``;%> <% for (let index
+        = 0; index < splitCaption.length; index++) { if (index === 15) { %> <%
+        caption += splitCaption[index] + `<span
+          onclick="toggleCaption(this.id)"
+          class="toggler"
+          id="dots_` + id + `"
+          >...read more</span
+        ><span id="more_` + id + `" class="more"
+          >`; %> <% } else { %> <% caption += splitCaption[index] + " ";%> <% }
+          } if (splitCaption.length > 15) {%> <%caption += `</span
+        ><br /><span
+          onclick="toggleCaption(this.id)"
+          id="less_` + id + `"
+          class="more less"
+          >show less</span
+        >`;%> <% } %> <%- caption %>
+      </p>
+    </div>
+  </div>
+</div>

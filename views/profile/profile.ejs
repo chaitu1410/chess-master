@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/profile/profile.css" />
+
+    <title>ChessMaster Community | Profile</title>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-storage.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyBly1FJfCUUtB0zxUlWC1yCOdxu2kdM6lc",
+        authDomain: "chessmaster-ef60e.firebaseapp.com",
+        projectId: "chessmaster-ef60e",
+        storageBucket: "chessmaster-ef60e.appspot.com",
+        messagingSenderId: "958207309306",
+        appId: "1:958207309306:web:b57d4f1f98b328af902043",
+        measurementId: "G-5ZPH55RN6B",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+  </head>
+
+  <body>
+    <%- include('../commons/navbar') %>
+
+    <div id="my-profile" class="profile">
+      <div class="profile-top">
+        <div id="edit-button" class="edit-button">
+          <span class="material-icons" onclick="showEditProfile()"> edit </span>
+        </div>
+        <div class="profile-data">
+          <% if (data.profileImage === "") { %>
+          <div id="name-profile">
+            <p id="profile-text">
+              <%= data.name.split(' ')[0][0] %><% if(data.name.split(' ').length
+              > 1) {%><%= data.name.split(' ')[1][0] %><%}%>
+            </p>
+          </div>
+          <% } else { %>
+          <img src="<%=data.profileImage%>" alt="profileImage" />
+          <% } %>
+          <div class="profile-info">
+            <p class="name"><%=data.name%></p>
+            <p class="username">@<%=data.username%></p>
+            <% if (data.bio === "") { %>
+            <p id="add-bio" onclick="showEditProfile()">Add Bio</p>
+            <% } else { %>
+            <p class="bio"><%=data.bio%></p>
+            <% } %>
+          </div>
+          <div class="profile-user-engagement">
+            <div class="engagement-data">
+              <p class="count"><%= data.posts.length %></p>
+              <p>Posts</p>
+            </div>
+            <div id="follower" class="engagement-data">
+              <p id="followers-<%=data.id%>" class="count"></p>
+              <p>Followers</p>
+            </div>
+            <div class="engagement-data">
+              <p id="following-<%=data.id%>" class="count"></p>
+              <p>Following</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="background-color: whitesmoke" class="posts">
+        <% for (let index = 0; index < data.posts.length; index++) { %> <% if
+        (data.posts[index].data.type === "imageAndCaption") { %> <%-
+        include('../posts/imageAndCaption', {id: data.posts[index].id, caption:
+        data.posts[index].data.caption, image: data.posts[index].data.image,
+        username: data.username, profileImage: data.profileImage, userID:
+        data.id, by: data.posts[index].data.by, name: data.name, selfID:
+        data.id}) %> <% } else if (data.posts[index].data.type ===
+        "captionOnly") { %> <%- include('../posts/onlyCaption', {id:
+        data.posts[index].id, caption: data.posts[index].data.caption, username:
+        data.username, profileImage: data.profileImage, userID: data.id, by:
+        data.posts[index].data.by, name: data.name, selfID: data.id}) %> <% }
+        else { %> <%- include('../posts/onlyImage', {id: data.posts[index].id,
+        image: data.posts[index].data.image, username: data.username,
+        profileImage: data.profileImage, userID: data.id, by:
+        data.posts[index].data.by, name: data.name, selfID: data.id}) %> <% } %>
+        <% } %>
+      </div>
+    </div>
+
+    <div id="edit-profile" class="profile" style="display: none">
+      <form action="/profile" method="post" enctype="multipart/form-data">
+        <div id="close-button" class="close-button">
+          <span class="material-icons" onclick="hideEditProfile()">
+            cancel
+          </span>
+        </div>
+        <div class="edit-profile-data">
+          <input
+            type="file"
+            name="profile"
+            id="profile-image-uploader"
+            onchange="showPreview(event)"
+            accept="image/*"
+          />
+          <!--
+          <% if (data.profileImage === "") { %> 
+            <div id="name-profile"><p id="profile-text"><%= data.name.split(' ')[0][0] %><% if(data.name.split(' ').length > 1) {%><%= data.name.split(' ')[1][0] %><%}%></p></div>
+          <% } else { %>
+            <img
+              src="<%=data.profileImage%>"
+              alt="profileImage"
+              id="profile-image-preview"
+            />
+          <%}%>
+        -->
+          <img src="<%if (data.profileImage !== "") {%><%=data.profileImage%><%}
+          else {%>/images/default-profile.png<%}%>" alt="profileImage"
+          id="profile-image-preview" />
+        </div>
+        <div class="inputs">
+          <p style="text-align: center; font-size: 11px; color: gray">
+            Click to upload Profile Image
+          </p>
+          <label for="name" style="margin-top: 0">Full Name</label>
+          <input
+            type="text"
+            aria-label="Full name"
+            name="name"
+            id="name"
+            value="<%=data.name%>"
+            required
+            minlength="2"
+            maxlength="50"
+          />
+          <label for="username">Username</label>
+          <input
+            type="text"
+            aria-label="Username"
+            aria-describedby="addon-wrapping"
+            name="username"
+            id="username"
+            value="<%=data.username%>"
+            required
+            minlength="7"
+            maxlength="21"
+          />
+          <p
+            id="usernameErrorProfile"
+            style="
+              text-align: center;
+              transition: 271ms;
+              color: tomato;
+              font-size: 12px;
+              margin-bottom: 0;
+            "
+          ></p>
+          <div class="multi-container">
+            <div class="multi-fields">
+              <label for="location">Location</label>
+              <input
+                type="text"
+                aria-label="Location"
+                aria-describedby="addon-wrapping"
+                name="location"
+                id="location"
+                value="<%=data.location%>"
+                minlength="8"
+                required
+              />
+            </div>
+            <button
+              type="button"
+              onclick="detectLocation()"
+              class="btn-sm btn-primary multi-button"
+            >
+              Auto-detect
+            </button>
+          </div>
+          <label for="bio">Bio</label>
+          <textarea aria-label="Bio" name="bio" id="bio">
+<%=data.bio%></textarea
+          >
+          <div class="submit-button">
+            <button id="save" type="submit" class="btn btn-primary">
+              Save
+            </button>
+            <a
+              href="/change-password"
+              style="text-align: center; color: #e41d24; margin-top: 7px"
+              >Change Password</a
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+    <%- include('../commons/footer') %>
+  </body>
+  <script src="/js/profile/profile.js"></script>
+  <script src="/js/posts/longCaption.js"></script>
+  <script src="/js/posts/formatText.js"></script>
+  <script src="/js/posts/postBottom.js"></script>
+
+  <script>
+    const checkUsername = () => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .where("username", "==", document.getElementById("username").value)
+        .get()
+        .then((snapshot) => {
+          if (!snapshot.docs.length) {
+            document.getElementById("usernameErrorProfile").innerText = "";
+            document.getElementById("save").disabled = false;
+          } else {
+            if (snapshot.docs[0].id === "<%=data.id%>") {
+              document.getElementById("usernameErrorProfile").innerText =
+                "You already have this username!";
+            } else {
+              document.getElementById("usernameErrorProfile").innerText =
+                "Username already taken!";
+              document.getElementById("save").disabled = true;
+            }
+          }
+        });
+    };
+
+    document
+      .getElementById("username")
+      .addEventListener("input", checkUsername);
+  </script>
+  <script>
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc("<%=data.id%>")
+      .onSnapshot((data) => {
+        document.getElementById(
+          "followers-<%=data.id%>"
+        ).innerText = data.data().followers.length;
+        document.getElementById(
+          "following-<%=data.id%>"
+        ).innerText = data.data().following.length;
+      });
+  </script>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../commons/header'); -%>
+
+    <link rel="stylesheet" href="/css/auth/signup.css" />
+    <title>ChessMaster Community | Sign Up</title>
+    <!-- <script src="/js/utilities/redirector.js"></script> -->
+  </head>
+
+  <body>
+    <div class="signup">
+      <img src="/images/authlogo.jpeg" alt="authlogo" />
+      <div class="inputs" style="margin-top: 51px; padding: 7px">
+        <div id="phone-container" class="multi-container">
+          <div class="multi-fields">
+            <input
+              style="margin-bottom: 0"
+              type="number"
+              class="form-control"
+              aria-label="Phone Number"
+              name="phone"
+              id="phone"
+              placeholder="Phone Number"
+            />
+          </div>
+          <button onclick="getOTP()" class="btn-sm btn-primary multi-button">
+            Get OTP
+          </button>
+        </div>
+        <div id="verifier" style="margin-bottom: 7px"></div>
+        <div id="otp-container" class="multi-container">
+          <div class="multi-fields">
+            <input
+              disabled
+              style="margin-bottom: 0"
+              type="number"
+              class="form-control"
+              aria-label="OTP"
+              name="otp"
+              id="otp"
+              required
+              placeholder="OTP"
+            />
+          </div>
+          <button
+            disabled
+            id="otp-button"
+            onclick="verifyOTP()"
+            class="btn-sm btn-primary multi-button"
+          >
+            &nbsp;&nbsp;Verify&nbsp;&nbsp;
+          </button>
+        </div>
+      </div>
+      <form id="form" action="/signup" method="post">
+        <div class="inputs">
+          <input type="text" name="phno" id="phno" style="display: none" />
+          <input
+            type="text"
+            class="form-control"
+            aria-label="Full name"
+            name="name"
+            id="name"
+            required
+            minlength="2"
+            maxlength="50"
+            placeholder="Full Name"
+          />
+          <input
+            type="text"
+            class="form-control"
+            aria-label="Username"
+            aria-describedby="addon-wrapping"
+            name="username"
+            id="username"
+            required
+            minlength="7"
+            maxlength="21"
+            placeholder="Username"
+          />
+          <p
+            id="usernameError"
+            style="
+              text-align: center;
+              transition: 271ms;
+              color: tomato;
+              font-size: 12px;
+              margin-bottom: 0;
+            "
+          ></p>
+          <input
+            type="password"
+            class="form-control"
+            aria-label="Password"
+            aria-describedby="addon-wrapping"
+            name="password"
+            id="password"
+            required
+            minlength="5"
+            maxlength="50"
+            placeholder="Password"
+          />
+          <div class="multi-container">
+            <div class="multi-fields">
+              <input
+                style="margin-bottom: 0"
+                type="text"
+                class="form-control"
+                aria-label="Location"
+                aria-describedby="addon-wrapping"
+                name="location"
+                id="location"
+                required
+                minlength="8"
+                placeholder="Location"
+              />
+            </div>
+            <button
+              type="button"
+              onclick="detectLocation()"
+              class="btn-sm btn-primary multi-button"
+            >
+              Auto-detect
+            </button>
+          </div>
+          <div class="signup-button mt-4">
+            <button disabled id="submit" type="submit" class="btn btn-primary">
+              Sign Up
+            </button>
+          </div>
+          <p class="alternate">
+            Already have an account? <a href="/login">Log in here</a>
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyBly1FJfCUUtB0zxUlWC1yCOdxu2kdM6lc",
+        authDomain: "chessmaster-ef60e.firebaseapp.com",
+        projectId: "chessmaster-ef60e",
+        storageBucket: "chessmaster-ef60e.appspot.com",
+        messagingSenderId: "958207309306",
+        appId: "1:958207309306:web:b57d4f1f98b328af902043",
+        measurementId: "G-5ZPH55RN6B",
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+  </body>
+  <script src="/js/auth/signup.js"></script>
+</html>

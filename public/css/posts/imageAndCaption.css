@@ -1,0 +1,35 @@
+.image-and-caption {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-image,
+.post-image img {
+  width: 100%;
+  object-fit: contain;
+}
+
+.post-caption {
+  border-top: 1px solid lightgray;
+  padding: 1.7rem;
+  padding-top: 11px;
+  padding-left: 11px;
+  background-color: #fff;
+  transition: 221ms;
+  /* padding-top: 7px; */
+  /* height: 54px;
+  overflow: hidden; */
+}
+
+.post-caption p {
+  font-size: 14px;
+  margin-bottom: 0px;
+  transition: 221ms;
+  word-wrap: break-word;
+}
+
+.post-profile-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 4px;
+}

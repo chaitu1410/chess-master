@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="css/posts/onlyImage.css" />
+
+<div id="post-<%=id%>" class="post">
+  <%- include('./postTop', {username: username, profileImage: profileImage, by:
+  by, id: id, name: name, selfID: selfID}) %>
+
+  <div class="image-only-post-image">
+    <img src="<%=image%>" alt=" " />
+  </div>
+
+  <%- include('./postBottom', {id: id, userID: userID, selfID: selfID}) %>
+</div>

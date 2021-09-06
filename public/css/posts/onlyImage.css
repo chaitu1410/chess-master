@@ -1,0 +1,5 @@
+.image-only-post-image,
+.image-only-post-image img {
+  width: 100%;
+  object-fit: contain;
+}

@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="/css/posts/postTop.css" />
+
+<div class="post-top">
+  <a href="/profile/<%=by%>" class="post-top-c">
+    <div class="profile-image">
+      <% if (profileImage === "") { %>
+      <div class="name-profile">
+        <p class="profile-text">
+          <%= name.split(' ')[0][0] %><% if(name.split(' ').length > 1) {%><%=
+          name.split(' ')[1][0] %><%}%>
+        </p>
+      </div>
+      <% } else { %>
+      <img src="<%=profileImage%>" alt=" " />
+      <% } %>
+    </div>
+    <div class="profile-name">
+      <p><%=username%></p>
+    </div>
+  </a>
+
+  <% if (selfID !== by) { %>
+  <div class="follow-user">
+    <p>
+      <button class="btn" onclick="followUnfollow('<%=by%>', '<%=selfID%>')">
+        <div id="button-<%=id%>">Follow</div>
+      </button>
+    </p>
+  </div>
+  <% } else {%>
+  <div class="follow-user">
+    <p>
+      <button class="btn" onclick="deletePost('<%=id%>')">
+        <div id="button-<%=id%>" style="color: #e41d24">Delete</div>
+      </button>
+    </p>
+  </div>
+  <% } %>
+</div>
+
+<% if (by !== selfID) { %>
+<script>
+  firebase
+    .firestore()
+    .collection("Users")
+    .doc("<%=by%>")
+    .onSnapshot((data) => {
+      if (data.data().followers.indexOf("<%=selfID%>") > -1) {
+        document.getElementById("button-<%=id%>").innerText = "Unfollow";
+      } else {
+        document.getElementById("button-<%=id%>").innerText = "Follow";
+      }
+    });
+</script>
+<% } %>

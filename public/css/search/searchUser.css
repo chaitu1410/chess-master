@@ -1,0 +1,72 @@
+.search_user {
+  display: flex;
+  align-items: center;
+  margin-left: 2px;
+  margin-right: 2px;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 4px;
+  padding-top: 3px;
+  padding-bottom: 7px;
+  transition: 251ms;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.search_user:hover {
+  transform: scale(1.04);
+}
+
+.profile-image {
+  height: 2.2rem;
+  width: 2.2rem;
+  text-align: center;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+  display: inline-block;
+}
+
+.profile-image img {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid #e41d24;
+}
+
+.name-profile {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  border: 2px solid #e41d24;
+  background-color: black;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.profile-text {
+  font-weight: bolder;
+  color: #e41d24;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background: black;
+}
+
+.profile-name {
+  margin: 0;
+  display: inline-block;
+}
+
+.profile-name p {
+  margin: 0;
+}
+
+@media only screen and (max-width: 550px) {
+  .search_user {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  .search_user:hover {
+    transform: scale(1);
+  }
+}
